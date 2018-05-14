@@ -15,11 +15,9 @@
         </div>
         <div class="list-group-item list-group-item" *ngFor="let compare of playerCompares; let i = index">
           <div class="row">
-            <div class="col-sm-5">{{ compare.name }}</div>
+            <div class="col-sm-5">{{ compare.opponent.name }}</div>
             <div class="col-sm-4">{{ compare.wins }} - {{ compare.losses }}</div>
             <div class="col-sm-3">{{ compare.streak }}
-              <!-- <span *ngIf="match.winner === player.id" class="font-weight-bold text-success">{{ match.score | setsFormat }}</span> -->
-              <!-- <span *ngIf="match.winner !== player.id" class="font-weight-bold text-danger">{{ match.score | setsFormat }}</span> -->
             </div>
           </div>
         </div>
@@ -39,12 +37,12 @@
         <div class="list-group-item list-group-item" *ngFor="let match of player.matches; let i = index">
           <div class="row">
             <div class="col-sm-2">{{ match.date | date: 'MM/dd/yyyy'}}</div>
-            <div class="col-sm-4"> {{ match.player1 === player.id? match.player2 : match.player1 }}</div>
+            <div class="col-sm-4"> {{ match.loser === player.id? match._winner.name : match._loser.name }}</div>
             <div class="col-sm-2">
-              <span *ngIf="match.winner === player.id" class="font-weight-bold text-success">{{ match.score | setsFormat }}</span>
-              <span *ngIf="match.winner !== player.id" class="font-weight-bold text-danger">{{ match.score | setsFormat }}</span>
+              <span *ngIf="match.winner === player.id" class="font-weight-bold text-success">{{ match.games | setsFormat }}</span>
+              <span *ngIf="match.winner !== player.id" class="font-weight-bold text-danger">{{ match.games | setsFormat }}</span>
             </div>
-            <div class="col-sm-4">{{ match.score | gamesFormat }}</div>
+            <div class="col-sm-4">{{ match.games | gamesFormat }}</div>
           </div>
         </div>
       </div>

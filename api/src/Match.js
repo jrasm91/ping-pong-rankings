@@ -3,13 +3,13 @@ class Match {
     id,
     player1,
     player2,
-    score,
+    games,
     date
   }) {
     this.id = id;
     this.player1 = player1;
     this.player2 = player2;
-    this.score = score;
+    this.games = games;
     this.date = date;
 
     const results = this.calcResults();
@@ -19,7 +19,7 @@ class Match {
 
   calcResults() {
     let wins = 0
-    this.score.forEach(game => {
+    this.games.forEach(game => {
       wins += game.player1 > game.player2 ? 1 : -1
     });
     return {

@@ -80,13 +80,17 @@ app.use((err, req, res, next) => {
     return next(err)
   }
 
+  logger.error(err);
+
   let errorMessage = err;
+  let errorCode = 500;
   switch (err.message) {
     case 'error-player-duplicate-name':
       errorMessage = `A player already exists with that name: ${err.playerName}`;
+      errorCode = 400;
       break;
   }
-  res.status(400).send(errorMessage)
+  res.status(errorCode).send(errorMessage)
 });
 
 app.listen(PORT, () => {

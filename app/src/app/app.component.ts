@@ -12,10 +12,10 @@ export class AppComponent {
     name: 'Home',
     link: '/home'
   }, {
-    name: 'Matches',
-    link: '/matches'
-  }, {
     name: 'Players',
     link: '/players'
+  }, {
+    name: 'Matches',
+    link: '/matches'
   }];
 }

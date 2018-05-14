@@ -35,8 +35,14 @@ export class MatchService {
     return this.loadMatches();
   }
 
-  createMatch(match: Match) {
-    return this.http.post('/api/match', match);
+  addMatch(match: Match) {
+    const obs = this.http.post('/api/matches', match).share();
+
+    obs.subscribe(() => {
+      this.loadMatches();
+    });
+
+    return obs;
   }
 
   getMatchesByPlayer(id): Observable<Array<Match>> {

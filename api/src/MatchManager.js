@@ -13,7 +13,7 @@ class MatchManager {
   addMatch({
     player1,
     player2,
-    score,
+    games,
     date
   }) {
 
@@ -22,8 +22,8 @@ class MatchManager {
       date,
       player1,
       player2,
-      score: score.map(([p1, p2]) => {
-        return new Match.Game(p1, p2)
+      games: games.map((game) => {
+        return new Match.Game(game.player1, game.player2)
       })
     });
     this.matches.push(match);

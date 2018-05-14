@@ -23,7 +23,7 @@ class PingPongRanker {
     this.matchManager.addMatch({
       player1: player1.id,
       player2: player2.id,
-      score: [[21, 9], [21, 11], [21, 18]],
+      games: [{ player1: 21, player2: 9 }, { player1: 21, player2: 11 }, { player1: 21, player2: 18 }],
       upset: false,
       date: new Date()
     });
@@ -31,21 +31,21 @@ class PingPongRanker {
     this.matchManager.addMatch({
       player1: player1.id,
       player2: player2.id,
-      score: [[21, 9], [21, 11], [21, 18]],
+      games: [{ player1: 21, player2: 9 }, { player1: 21, player2: 11 }, { player1: 21, player2: 18 }],
       date: new Date()
     });
 
     this.matchManager.addMatch({
       player1: player1.id,
       player2: player2.id,
-      score: [[21, 9], [10, 21], [21, 18]],
+      games: [{ player1: 21, player2: 9 }, { player1: 21, player2: 11 }, { player1: 21, player2: 18 }],
       date: new Date()
     });
 
     this.matchManager.addMatch({
       player1: player1.id,
       player2: player2.id,
-      score: [[9, 21], [11, 21], [18, 21]],
+      games: [{ player1: 21, player2: 9 }, { player1: 21, player2: 11 }, { player1: 21, player2: 18 }],
       date: new Date()
     });
   }

@@ -43,9 +43,10 @@ export class PlayerDetailComponent implements OnInit {
 
     matches.forEach(match => {
       const opponentId = this.player.id === match.winner ? match.loser : match.winner;
+      const opponent = opponentId === match.winner ? match._winner : match._loser;
       if (!opponentMap[opponentId]) {
         opponentMap[opponentId] = {
-          name: opponentId,
+          opponent,
           wins: 0,
           losses: 0,
           streak: 0
