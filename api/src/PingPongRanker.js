@@ -56,6 +56,9 @@ class PingPongRanker {
 
   getPlayers() {
     const players = this.playerManager.getAll();
+    players.sort((a, b) => {
+      return b.score - a.score;
+    });
     players.forEach(player => this.computeOnPlayer(player));
     return players;
   }
@@ -136,7 +139,9 @@ class PingPongRanker {
   }
 
   updateRankings() {
-    this.playerManager.getAll().forEach(player => {
+    const players = this.playerManager.getAll();
+
+    players.forEach(player => {
       player.score = config.DEFAULT_SCORE;
     });
 
@@ -147,7 +152,7 @@ class PingPongRanker {
 
     matches.forEach(match => {
       this.processMatch(match);
-    })
+    });
   }
 
   processMatch(match) {

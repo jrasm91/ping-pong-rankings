@@ -1,4 +1,5 @@
 const express = require('express'),
+  path = require('path'),
   bodyParser = require('body-parser'),
   logger = require('./src/Logger'),
   config = require('./src/Config'),
@@ -8,6 +9,12 @@ const PORT = process.env.PORT || config.DEFAULT_PORT;
 
 const app = express(),
   ranker = new PingPongRanker();
+
+app.use(express.static('../app/dist'));
+
+app.get(['/test', /^\/(?!api).*/], function (req, res, next) {
+  res.sendFile(path.join(__dirname, '../app/dist', 'index.html'));
+});
 
 app.use(bodyParser.json());
 app.set('json spaces', 2);
@@ -73,7 +80,6 @@ app.post('/api/matches', (req, res) => {
 app.delete('/api/matches/:id', (req, res) => {
   res.send(ranker.removeMatchById(req.params.id));
 });
-
 
 app.use((err, req, res, next) => {
   if (res.headersSent) {
