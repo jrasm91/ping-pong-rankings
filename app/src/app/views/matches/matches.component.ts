@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { MatchService } from '../../services/match.service';
+import { ApiService } from '../../services/api.service';
 
 @Component({
   selector: 'app-matches',
@@ -8,7 +8,7 @@ import { MatchService } from '../../services/match.service';
 })
 export class MatchesComponent implements OnInit {
 
-  constructor(@Inject(MatchService) private matchStore: MatchService) { }
+  constructor(@Inject(ApiService) private api: ApiService) { }
 
   ngOnInit() { }
 

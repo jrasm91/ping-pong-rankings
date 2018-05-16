@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { Player } from '../../models/player.model';
-import { PlayerService } from '../../services/player.service';
+import { ApiService } from '../../services/api.service';
 import { Observable } from 'rxjs/Observable';
 import { HttpErrorResponse } from '@angular/common/http';
 
@@ -15,18 +15,18 @@ export class PlayersComponent implements OnInit {
   newPlayer: Player;
   errorMessage = '';
 
-  constructor(@Inject(PlayerService) private playerStore: PlayerService) { }
+  constructor(@Inject(ApiService) private api: ApiService) { }
 
   ngOnInit() {
     this.resetPlayer();
-    this.playerStore.getPlayers().subscribe(players => {
+    this.api.players.subscribe(players => {
       this.players = players;
     });
   }
 
   addPlayer() {
     this.errorMessage = '';
-    this.playerStore.createPlayer(this.newPlayer).subscribe(
+    this.api.addPlayer(this.newPlayer).subscribe(
       player => { },
       (error: HttpErrorResponse) => {
         this.errorMessage = error.error;

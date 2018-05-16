@@ -8,8 +8,7 @@ import { MatchCardComponent } from './components/match-card/match-card.component
 import { PlayerCardComponent } from './components/player-card/player-card.component';
 import { GamesFormatPipe } from './pipes/games-format.pipe';
 import { SetsFormatPipe } from './pipes/sets-format.pipe';
-import { MatchService } from './services/match.service';
-import { PlayerService } from './services/player.service';
+import { ApiService } from './services/api.service';
 import { AboutComponent } from './views/about/about.component';
 import { HomeComponent } from './views/home/home.component';
 import { MatchDetailComponent } from './views/match-detail/match-detail.component';
@@ -74,8 +73,8 @@ const appRoutes: Routes = [{
     RouterModule.forRoot(appRoutes)
   ],
   providers: [
-    PlayerService,
-    MatchService],
+    ApiService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

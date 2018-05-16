@@ -1,7 +1,9 @@
 
 const PlayerManager = require('./PlayerManager'),
   MatchManager = require('./MatchManager'),
-  Match = require('./Match');
+  Match = require('./Match'),
+  config = require('./Config'),
+  Utility = require('./Utility');
 
 
 class PingPongRanker {
@@ -32,7 +34,7 @@ class PingPongRanker {
       player1: player1.id,
       player2: player2.id,
       games: [{ player1: 21, player2: 9 }, { player1: 21, player2: 11 }, { player1: 21, player2: 18 }],
-      date: new Date()
+      date: new Date("2017-05-16T01:43:09.573Z")
     });
 
     this.matchManager.addMatch({
@@ -48,6 +50,8 @@ class PingPongRanker {
       games: [{ player1: 21, player2: 9 }, { player1: 21, player2: 11 }, { player1: 21, player2: 18 }],
       date: new Date()
     });
+
+    this.updateRankings();
   }
 
   getPlayers() {
@@ -126,7 +130,38 @@ class PingPongRanker {
   }
 
   addMatch(match) {
-    return this.matchManager.addMatch(match);
+    const result = this.matchManager.addMatch(match);
+    this.updateRankings();
+    return result;
+  }
+
+  updateRankings() {
+    this.playerManager.getAll().forEach(player => {
+      player.score = config.DEFAULT_SCORE;
+    });
+
+    const matches = this.matchManager.getAll();
+    matches.sort((a, b) => {
+      return new Date(b.date) - new Date(a.date);
+    });
+
+    matches.forEach(match => {
+      this.processMatch(match);
+    })
+  }
+
+  processMatch(match) {
+    const winner = this.getPlayerById(match.winner);
+    const loser = this.getPlayerById(match.loser);
+
+    const upset = winner.score < loser.score;
+    const points = Utility.findRankingChanges(winner.score, loser.score, upset);
+
+    winner.score += points;
+    loser.score -= points;
+
+    match.pointsExchanged = points;
+    match.upset = upset;
   }
 
   removeMatchById(id) {

@@ -1,8 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { PlayerService } from '../../services/player.service';
 import { Player } from '../../models/player.model';
-import { MatchService } from '../../services/match.service';
+import { ApiService } from '../../services/api.service';
 import { Match } from '../../models/match.model';
 
 interface PlayerCompare {
@@ -24,15 +23,14 @@ export class PlayerDetailComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    @Inject(PlayerService) private playerStore: PlayerService,
-    @Inject(MatchService) private matchStore: MatchService
+    @Inject(ApiService) private api: ApiService,
   ) {
     const playerId = this.route.snapshot.params.id;
     this.player = playerId;
 
-    this.playerStore.getPlayerById(playerId).flatMap(player => {
+    this.api.getPlayerById(playerId).flatMap(player => {
       this.player = player;
-      return this.matchStore.getMatchesByPlayer(playerId);
+      return this.api.getMatchesByPlayer(playerId);
     }).subscribe(matches => this.calcMatchCompare(matches));
   }
 

@@ -1,8 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { PlayerService } from '../../services/player.service';
+import { ApiService } from '../../services/api.service';
 import { Player } from '../../models/player.model';
 import { Match } from '../../models/match.model';
-import { MatchService } from '../../services/match.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Game } from '../../models/game.model';
 
@@ -19,14 +18,13 @@ export class AddMatchComponent implements OnInit {
   newGame: Game;
 
   constructor(
-    @Inject(PlayerService) private playerStore: PlayerService,
-    @Inject(MatchService) private matchStore: MatchService
+    @Inject(ApiService) private api: ApiService,
   ) { }
 
   ngOnInit() {
     this.resetMatch();
     this.resetGame();
-    this.playerStore.getPlayers().subscribe(players => this.players = players);
+    this.api.players.subscribe(players => this.players = players);
   }
 
   addGame() {
@@ -47,7 +45,7 @@ export class AddMatchComponent implements OnInit {
 
   addMatch() {
     this.errorMessage = '';
-    this.matchStore.addMatch(this.newMatch).subscribe(
+    this.api.addMatch(this.newMatch).subscribe(
       match => { },
       (error: HttpErrorResponse) => {
         this.errorMessage = error.error;

@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { MatchService } from '../../services/match.service';
+import { ApiService } from '../../services/api.service';
 import { Match } from '../../models/match.model';
 
 @Component({
@@ -13,10 +13,10 @@ export class MatchListComponent implements OnInit {
 
   matches: Array<Match> = [];
 
-  constructor(@Inject(MatchService) private matchStore: MatchService) { }
+  constructor(@Inject(ApiService) private api: ApiService) { }
 
   ngOnInit() {
-    this.matchStore.getMatches().subscribe(matches => {
+    this.api.matches.subscribe(matches => {
       this.matches = matches;
     });
   }
