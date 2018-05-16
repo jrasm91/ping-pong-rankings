@@ -12,7 +12,7 @@ const app = express(),
 
 app.use(express.static('../app/dist'));
 
-app.get(['/test', /^\/(?!api).*/], function (req, res, next) {
+app.get(['/', /^\/(?!api).*/], function (req, res, next) {
   res.sendFile(path.join(__dirname, '../app/dist', 'index.html'));
 });
 
