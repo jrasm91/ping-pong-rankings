@@ -2,5 +2,8 @@
   "scripts": {
     "postinstall": "cd api && npm install",
     "start": "cd api && npm start"
+  },
+  "dependencies": {
+    "angular-cli": "^1.0.0-beta.28.3"
   }
 }
