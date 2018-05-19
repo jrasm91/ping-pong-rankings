@@ -36,52 +36,53 @@ app.get('/api', (req, res) => {
 
 /** PLAYER GET ALL*/
 app.get('/api/players', (req, res) => {
-  res.send(ranker.getPlayers());
+  ranker.getPlayers().then(players => res.send(players));
 });
 
 /** PLAYER GET ONE*/
 app.get('/api/players/:id', (req, res) => {
-  const player = ranker.getPlayerById(req.params.id);
-  if (!player) {
-    res.status(404).send('Player Not Found');
-  } else {
-    res.send(player);
-  }
+  ranker.getPlayerById(req.params.id).then(player => {
+    if (!player) {
+      res.status(404).send('Player Not Found');
+    } else {
+      res.send(player)
+    }
+  });
 });
 
 /** PLAYER ADD */
 app.post('/api/players', (req, res) => {
-  res.send(ranker.addPlayer(req.body));
+  ranker.addPlayer(req.body).then(player => res.send(player));
 });
 
 /** PLAYER UPDATE */
 app.put('/api/players/:id', (req, res) => {
-  res.send(ranker.updatePlayer(id, req.params.body));
+  ranker.updatePlayer(id, req.params.body).then(player => res.send(player));
 });
 
 /** PLAYER DELETE */
 app.delete('/api/players/:id', (req, res) => {
-  res.send(ranker.removePlayerById(req.params.id));
+  ranker.removePlayerById(req.params.id).then(player => res.send(player));
 });
 
 /** MATCHES GET ALL*/
 app.get('/api/matches', (req, res) => {
-  res.send(ranker.getMatches());
+  ranker.getMatches().then(matches => res.send(matches));
 });
 
 /** MATCHES GET ONE*/
 app.get('/api/matches/:id', (req, res) => {
-  res.send(ranker.getMatchById(req.params.id));
+  ranker.getMatchById(req.params.id).then(match => res.send(match));
 });
 
 /** MATCHES ADD */
 app.post('/api/matches', (req, res) => {
-  res.send(ranker.addMatch(req.body));
+  ranker.addMatch(req.body).then(match => res.send(match));
 });
 
 /** MATCHES DELETE */
 app.delete('/api/matches/:id', (req, res) => {
-  res.send(ranker.removeMatchById(req.params.id));
+  ranker.removeMatchById(req.params.id).then(match => res.send(match));
 });
 
 app.use((err, req, res, next) => {

@@ -5,7 +5,7 @@
 /dist-server
 /tmp
 /out-tsc
-
+*.code-workspace
 # dependencies
 /node_modules
 

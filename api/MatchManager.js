@@ -1,14 +1,13 @@
 
 
-const uuid = require('uuid/v4');
+const db = require('./Database');
 
-const Match = require('./Match');
+const Match = db.Match;
+const Game = db.Game;
 
 class MatchManager {
 
-  constructor() {
-    this.matches = [];
-  }
+  constructor() { }
 
   addMatch({
     player1,
@@ -16,35 +15,38 @@ class MatchManager {
     games,
     date
   }) {
-
-    const match = new Match({
-      id: uuid(),
-      date,
-      player1,
-      player2,
-      games: games.map((game) => {
-        return new Match.Game(game.player1, game.player2)
-      })
+    const match = new Match();
+    match.date = date;
+    match.player1 = player1;
+    match.player2 = player2;
+    games.forEach(game => {
+      const newGame = new Game();
+      newGame.player1 = game.player1;
+      newGame.player2 = game.player2;
+      match.games.push(newGame);
     });
-    this.matches.push(match);
-    return match;
+
+    return new Promise((resolve, reject) => {
+      match.save((err, result) => err ? reject(err) : resolve(match));
+    });
   }
 
   getById(id) {
-    return this.matches.filter(match => match.id === id)[0] || {};
+    return new Promise((resolve, reject) => {
+      Match.findById(id, (err, match) => err ? reject(err) : resolve(match));
+    });
   }
 
   deleteMatch(match) {
-    match = this.getById(match.id);
-    if (match) {
-      this.matches = this.matches.filter(m => m.id !== match.id);
-      return true;
-    }
-    return false;
+    return new Promise((resolve, reject) => {
+      resolve(true);
+    })
   }
 
   getAll() {
-    return this.matches;
+    return new Promise((resolve, reject) => {
+      Match.find({}, (err, matches) => err ? reject(err) : resolve(matches));
+    });
   }
 }
 

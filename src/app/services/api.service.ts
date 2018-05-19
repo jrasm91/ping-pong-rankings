@@ -68,7 +68,7 @@ export class ApiService {
 
   getPlayerById(id: string): Observable<Player> {
     return this.players.flatMap((players: Player[]) => {
-      const player = players.filter(p => p.id === id)[0] || null;
+      const player = players.filter(p => p._id === id)[0] || null;
       return Observable.of(player);
     });
     // return this.http.get<Player>(`/api/players/${id}`)

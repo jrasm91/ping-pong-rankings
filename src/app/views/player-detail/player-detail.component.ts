@@ -40,7 +40,7 @@ export class PlayerDetailComponent implements OnInit {
     const opponentMap = {};
 
     matches.forEach(match => {
-      const opponentId = this.player.id === match.winner ? match.loser : match.winner;
+      const opponentId = this.player._id === match.winner ? match.loser : match.winner;
       const opponent = opponentId === match.winner ? match._winner : match._loser;
       if (!opponentMap[opponentId]) {
         opponentMap[opponentId] = {
@@ -52,7 +52,7 @@ export class PlayerDetailComponent implements OnInit {
       }
 
       const opponentCompare = opponentMap[opponentId];
-      if (this.player.id === match.winner) {
+      if (this.player._id === match.winner) {
         opponentCompare.wins += 1;
         if (opponentCompare.streak >= 0) {
           opponentCompare.streak += 1;

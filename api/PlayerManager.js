@@ -1,62 +1,95 @@
 
-const Player = require('./Player');
+// const Player = require('./Player');
+const db = require('./Database');
+
+const Player = db.Player;
 
 const logger = require('./Logger'),
   uuid = require('uuid/v4');
 
 class PlayerManager {
 
-  constructor() {
-    this.players = {};
-  }
+  constructor() { }
 
   getById(id) {
-    return this.players[id];
+    return new Promise((resolve, reject) => {
+      Player.findById(id, (err, data) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(data);
+        }
+      });
+    })
   }
 
   getByName(name) {
-    return Object.values(this.players).filter(p => p.name === name)[0];
+    return new Promise((resolve, reject) => {
+      Player.findOne({ name }, (err, player) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(player);
+        }
+      });
+    });
   }
 
   addPlayer({
     id,
     name
   }) {
-    const duplicatePlayer = this.getByName(name);
-    if (duplicatePlayer) {
-      const error = new Error("error-player-duplicate-name");
-      error.playerName = name;
-      throw error;
-    }
-    const player = new Player({
-      id: id || uuid(),
-      name
+    return new Promise((resolve, reject) => {
+      this.getByName(name).then((duplicatePlayer) => {
+        if (duplicatePlayer) {
+          const error = new Error("error-player-duplicate-name");
+          error.playerName = name;
+          throw error;
+        } else {
+          const newPlayer = new Player();
+          newPlayer.name = name;
+          newPlayer.save((error => {
+            if (error) {
+              reject(error);
+            } else {
+              resolve(newPlayer);
+            }
+          }));
+        }
+      });
     });
-    this.players[player.id] = player;
-    return player;
   }
 
   updatePlayer(id, newPlayer) {
-    const player = this.getById(id);
-    if (player) {
-      newPlayer = Object.assign(oldPlayer, newPlayer);
-      this.players[player.id] = newPlayer;
-      return newPlayer;
-    }
-    return {};
+    return new Promise((resolve, reject) => {
+      Player.findById(id, (error, player) => {
+        if (error) {
+          return reject(error);
+        }
+
+        if (!player) {
+          throw new Error("error-player-not-found");
+        }
+        Object.assign(player, newPlayer);
+        player.save();
+        resolve(player);
+      });
+    });
   }
 
   deletePlayer(oldPlayer) {
-    const player = this.getById(oldPlayer.id);
-    if (player) {
-      delete this.players[player.id];
-      return true;
-    }
-    return false;
+    // const player = this.getById(oldPlayer.id);
+    // if (player) {
+    //   delete this.players[player.id];
+    //   return true;
+    // }
+    // return false;
   }
 
   getAll() {
-    return Object.values(this.players);
+    return new Promise((resolve, reject) => {
+      Player.find({}, (error, players) => error ? reject(error) : resolve(players));
+    });
   }
 }
 
