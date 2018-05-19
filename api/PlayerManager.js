@@ -1,7 +1,7 @@
 
-const Player = require('./Player.js');
+const Player = require('./Player');
 
-const logger = require('./Logger.js'),
+const logger = require('./Logger'),
   uuid = require('uuid/v4');
 
 class PlayerManager {

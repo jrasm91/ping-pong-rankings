@@ -1,6 +1,6 @@
 
 
-const config = require('./Config.js');
+const config = require('./Config');
 
 class Player {
   constructor({

@@ -2,7 +2,7 @@
 
 const uuid = require('uuid/v4');
 
-const Match = require('./Match.js');
+const Match = require('./Match');
 
 class MatchManager {
 

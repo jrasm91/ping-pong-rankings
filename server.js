@@ -1,27 +1,30 @@
 const express = require('express'),
   path = require('path'),
   bodyParser = require('body-parser'),
-  logger = require('./src/Logger'),
-  config = require('./src/Config'),
-  PingPongRanker = require('./src/PingPongRanker');
+  logger = require('./api/Logger'),
+  config = require('./api/Config'),
+  PingPongRanker = require('./api/PingPongRanker');
 
 const PORT = process.env.PORT || config.DEFAULT_PORT;
 
 const app = express(),
   ranker = new PingPongRanker();
 
-app.use(express.static('../app/dist'));
+app.use(express.static(__dirname + '/dist'));
 
 app.get(['/', /^\/(?!api).*/], function (req, res, next) {
   res.sendFile(path.join(__dirname, '../app/dist', 'index.html'));
 });
 
 app.use(bodyParser.json());
-app.set('json spaces', 2);
+
+if (process.env.NODE_ENV !== 'production') {
+  app.set('json spaces', 2);
+}
 
 app.all('/', (req, res, next) => {
   logger.info(`${req.statusCode} ${req.method} ${req.path}`);
-})
+});
 
 /** META*/
 app.get('/api', (req, res) => {
