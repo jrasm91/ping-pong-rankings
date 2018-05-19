@@ -62,7 +62,7 @@ export class ApiService {
 
   getMatchesByPlayer(id): Observable<Array<Match>> {
     const matches = this._matches.getValue();
-    const filtered = matches.filter(match => match.winner === id || match.loser === id);
+    const filtered = matches.filter(match => match.winnerId === id || match.loserId === id);
     return Observable.of(filtered);
   }
 

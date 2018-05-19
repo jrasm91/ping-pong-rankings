@@ -19,6 +19,7 @@ interface PlayerCompare {
 export class PlayerDetailComponent implements OnInit {
 
   player: Player;
+  playerMatches: Array<Match> = [];
   playerCompares: Array<PlayerCompare> = [];
 
   constructor(
@@ -26,12 +27,14 @@ export class PlayerDetailComponent implements OnInit {
     @Inject(ApiService) private api: ApiService,
   ) {
     const playerId = this.route.snapshot.params.id;
-    this.player = playerId;
 
     this.api.getPlayerById(playerId).flatMap(player => {
       this.player = player;
       return this.api.getMatchesByPlayer(playerId);
-    }).subscribe(matches => this.calcMatchCompare(matches));
+    }).subscribe(matches => {
+      this.playerMatches = matches;
+      this.calcMatchCompare(matches);
+    });
   }
 
   ngOnInit() { }
@@ -40,31 +43,31 @@ export class PlayerDetailComponent implements OnInit {
     const opponentMap = {};
 
     matches.forEach(match => {
-      const opponentId = this.player._id === match.winner ? match.loser : match.winner;
-      const opponent = opponentId === match.winner ? match._winner : match._loser;
+      const opponentId = this.player._id === match.winnerId ? match.loserId : match.winnerId;
+      const opponentName = opponentId === match.winnerId ? match.winnerName : match.loserName;
       if (!opponentMap[opponentId]) {
         opponentMap[opponentId] = {
-          opponent,
+          opponentName,
           wins: 0,
           losses: 0,
           streak: 0
         };
       }
 
-      const opponentCompare = opponentMap[opponentId];
-      if (this.player._id === match.winner) {
-        opponentCompare.wins += 1;
-        if (opponentCompare.streak >= 0) {
-          opponentCompare.streak += 1;
+      const opponent = opponentMap[opponentId];
+      if (this.player._id === match.winnerId) {
+        opponent.wins += 1;
+        if (opponent.streak >= 0) {
+          opponent.streak += 1;
         } else {
-          opponentCompare.streak = 1;
+          opponent.streak = 1;
         }
       } else {
-        opponentCompare.losses += 1;
-        if (opponentCompare.streak <= 0) {
-          opponentCompare.streak -= 1;
+        opponent.losses += 1;
+        if (opponent.streak <= 0) {
+          opponent.streak -= 1;
         } else {
-          opponentCompare.streak = -1;
+          opponent.streak = -1;
         }
       }
     });

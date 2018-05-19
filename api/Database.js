@@ -1,6 +1,7 @@
 const mongoose = require('mongoose'),
   config = require('./Config'),
-  logger = require('./Logger');
+  logger = require('./Logger'),
+  Utility = require('./Utility');
 
 const connection = mongoose.connect(config.DB_CONNECTION);
 
@@ -8,16 +9,19 @@ const Schema = mongoose.Schema,
   ObjectId = Schema.ObjectId;
 
 const PlayerSchema = new Schema({
-  id: ObjectId,
   name: String,
-  score: Number
+  score: Number,
+  wins: Number,
+  losses: Number
 });
 
 PlayerSchema.pre('save', function (next) {
   if (this.isNew) {
     this.score = config.DEFAULT_SCORE
+    this.wins = 0;
+    this.losses = 0;
   }
-  logger.log('Saving Player', this);
+  logger.log('Saving Player');
   next();
 });
 
@@ -33,24 +37,81 @@ const MatchSchema = new Schema({
   id: ObjectId,
   player1: String,
   player2: String,
-  winner: String,
-  loser: String,
+
+  winnerId: String,
+  winnerName: String,
+  winnerScore: Number,
+
+  loserId: String,
+  loserName: String,
+  loserScore: Number,
+
+  upset: Boolean,
+  pointsExchanged: Number,
   games: [GameSchema],
   date: Date
 });
 
 const Match = mongoose.model('Match', MatchSchema);
 
-MatchSchema.pre('save', function (next) {
-  console.log(this);
+const setWinner = function (next) {
   if (this.isNew) {
     logger.log('Saving Match');
     let wins = this.games.filter(game => game.player1 > game.player2).length;
-    this.winner = wins >= 0 ? this.player1 : this.player2;
-    this.loser = wins >= 0 ? this.player2 : this.player1
+    this.winnerId = wins >= 0 ? this.player1 : this.player2;
+    this.loserId = wins >= 0 ? this.player2 : this.player1
   }
   next();
-});
+};
+
+const updatePlayers = function (next) {
+  Player.find({
+    '_id': {
+      $in: [
+        mongoose.Types.ObjectId(this.winnerId),
+        mongoose.Types.ObjectId(this.loserId)
+      ]
+    }
+  }, (err, players) => {
+    if (err) {
+      return logger.error('Error updating player scores', err);
+    }
+    const winner = players[0];
+    const loser = players[1];
+
+    const upset = loser.score > winner.score;
+    const pointsExchanged = Utility.findRankingChanges(winner.score, loser.score, upset);
+
+    this.upset = upset;
+    this.pointsExchanged;
+
+    this.winnerScore = winner.score;
+    this.winnerName = winner.name;
+    winner.score += pointsExchanged;
+    winner.wins += 1;
+
+    this.loserScore = loser.score;
+    this.loserName = loser.name;
+    loser.score -= pointsExchanged;
+    loser.losses += 1;
+
+    winner.save((err, data) => {
+      if (err) {
+        logger.error('Error Updating Player', err);
+      }
+    });
+    loser.save((err, data) => {
+      if (err) {
+        logger.error('Error Updating Player', err);
+      }
+    });
+
+    next();
+  });
+}
+
+MatchSchema.pre('save', setWinner);
+MatchSchema.pre('save', updatePlayers);
 
 module.exports = {
   connection,

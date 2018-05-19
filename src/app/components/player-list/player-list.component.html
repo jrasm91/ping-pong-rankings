@@ -14,8 +14,8 @@
     <div class="col-1">{{ i + 1 }}</div>
     <div class="col-3">{{ player.score }}</div>
     <div class="col-5">
-      <a class="" [routerLink]="'/players/' + player.id">{{ player.name}}</a>
+      <a class="" [routerLink]="'/players/' + player._id">{{ player.name}}</a>
     </div>
-    <div class="col-3">{{ player._wins }} - {{ player._losses }}</div>
+    <div class="col-3">{{ player.wins }} - {{ player.losses }}</div>
   </div>
 </div>

@@ -5,4 +5,6 @@ export interface Player {
   name: string;
   matches: Array<Match>;
   score: number;
+  wins?: number;
+  losses?: number;
 }
