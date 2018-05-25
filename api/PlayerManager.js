@@ -88,7 +88,7 @@ class PlayerManager {
 
   getAll() {
     return new Promise((resolve, reject) => {
-      Player.find({}, (error, players) => error ? reject(error) : resolve(players));
+      Player.find({}, null, { sort: '-score' }, (error, players) => error ? reject(error) : resolve(players));
     });
   }
 }

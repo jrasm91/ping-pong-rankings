@@ -5,8 +5,8 @@
   "main": "server.js",
   "scripts": {
     "ng": "ng",
-    "start": "node server.js",
-    "serve": "ng serve",
+    "start": "ng serve --aot --proxy-conf proxy.conf.json",
+    "server": "node server.js",
     "build": "ng build --prod",
     "test": "ng test",
     "lint": "ng lint",

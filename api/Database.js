@@ -49,7 +49,10 @@ const MatchSchema = new Schema({
   upset: Boolean,
   pointsExchanged: Number,
   games: [GameSchema],
-  date: Date
+  date: {
+    type: Date,
+    default: Date.now
+  }
 });
 
 const Match = mongoose.model('Match', MatchSchema);
@@ -60,6 +63,9 @@ const setWinner = function (next) {
     let wins = this.games.filter(game => game.player1 > game.player2).length;
     this.winnerId = wins >= 0 ? this.player1 : this.player2;
     this.loserId = wins >= 0 ? this.player2 : this.player1
+
+    logger.info(`Match.winnerId`, this.winnerId);
+    logger.info(`Match.loserId`, this.loserId);
   }
   next();
 };
@@ -83,7 +89,7 @@ const updatePlayers = function (next) {
     const pointsExchanged = Utility.findRankingChanges(winner.score, loser.score, upset);
 
     this.upset = upset;
-    this.pointsExchanged;
+    this.pointsExchanged = pointsExchanged;
 
     this.winnerScore = winner.score;
     this.winnerName = winner.name;

@@ -12,18 +12,23 @@ class MatchManager {
   addMatch({
     player1,
     player2,
-    games,
-    date
+    games
   }) {
-    const match = new Match();
-    match.date = date;
-    match.player1 = player1;
-    match.player2 = player2;
-    games.forEach(game => {
-      const newGame = new Game();
-      newGame.player1 = game.player1;
-      newGame.player2 = game.player2;
-      match.games.push(newGame);
+    if (!player1 || !player2) {
+      throw new Error("Match is missing a player");
+    } else if (player1 === player2) {
+      throw new Error("Can't play yourself!");
+    }
+
+    const match = new Match({
+      player1,
+      player2,
+      games: games.map(game => {
+        return new Game({
+          player1: game.player1,
+          player2: game.player2
+        });
+      })
     });
 
     return new Promise((resolve, reject) => {
@@ -45,7 +50,7 @@ class MatchManager {
 
   getAll() {
     return new Promise((resolve, reject) => {
-      Match.find({}, (err, matches) => err ? reject(err) : resolve(matches));
+      Match.find({}, null, { sort: '-date' }, (err, matches) => err ? reject(err) : resolve(matches));
     });
   }
 }
