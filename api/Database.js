@@ -82,8 +82,8 @@ const updatePlayers = function (next) {
     if (err) {
       return logger.error('Error updating player scores', err);
     }
-    const winner = players[0];
-    const loser = players[1];
+    const winner = players[0].id === this.winnerId ? players[0] : players[1];
+    const loser = players[0].id === this.loserId ? players[0] : players[1];
 
     const upset = loser.score > winner.score;
     const pointsExchanged = Utility.findRankingChanges(winner.score, loser.score, upset);
