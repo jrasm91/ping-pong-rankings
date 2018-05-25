@@ -61,8 +61,9 @@ const setWinner = function (next) {
   if (this.isNew) {
     logger.log('Saving Match');
     let wins = this.games.filter(game => game.player1 > game.player2).length;
-    this.winnerId = wins >= 0 ? this.player1 : this.player2;
-    this.loserId = wins >= 0 ? this.player2 : this.player1
+    let losses = this.games.length - wins;
+    this.winnerId = wins >= losses ? this.player1 : this.player2;
+    this.loserId = wins >= losses ? this.player2 : this.player1
 
     logger.info(`Match.winnerId`, this.winnerId);
     logger.info(`Match.loserId`, this.loserId);
@@ -82,6 +83,7 @@ const updatePlayers = function (next) {
     if (err) {
       return logger.error('Error updating player scores', err);
     }
+    // using == because _id is a object and winnerId is a string
     const winner = players[0]._id == this.winnerId ? players[0] : players[1];
     const loser = players[0]._id == this.loserId ? players[0] : players[1];
 
