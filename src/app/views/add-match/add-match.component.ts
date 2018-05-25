@@ -4,6 +4,7 @@ import { Player } from '../../models/player.model';
 import { Match } from '../../models/match.model';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Game } from '../../models/game.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-add-match',
@@ -19,6 +20,7 @@ export class AddMatchComponent implements OnInit {
 
   constructor(
     @Inject(ApiService) private api: ApiService,
+    private router: Router
   ) { }
 
   ngOnInit() {
@@ -46,12 +48,14 @@ export class AddMatchComponent implements OnInit {
   addMatch() {
     this.errorMessage = '';
     this.api.addMatch(this.newMatch).subscribe(
-      match => { },
+      match => {
+        this.router.navigateByUrl('/matches');
+      },
       (error: HttpErrorResponse) => {
         this.errorMessage = error.error;
       });
-    this.resetMatch();
-    this.resetGame();
+    // this.resetMatch();
+    // this.resetGame();
   }
 
   resetMatch() {
