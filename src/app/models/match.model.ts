@@ -3,7 +3,6 @@ import { Player } from './player.model';
 
 export interface Match {
   games: Array<Game>;
-  date: string;
   player1: string;
   player2: string;
 

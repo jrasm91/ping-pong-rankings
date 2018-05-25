@@ -57,7 +57,6 @@ export class AddMatchComponent implements OnInit {
   resetMatch() {
     this.newMatch = {
       games: [],
-      date: new Date().toISOString().slice(0, 11) + '14:30:00',
       player1: '',
       player2: ''
     };

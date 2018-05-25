@@ -18,10 +18,11 @@ import { HomeComponent } from './views/home/home.component';
 import { MatchesComponent } from './views/matches/matches.component';
 import { PlayerDetailComponent } from './views/player-detail/player-detail.component';
 import { PlayersComponent } from './views/players/players.component';
+import { AddPlayerComponent } from './views/add-player/add-player.component';
 
 const appRoutes: Routes = [{
   path: '',
-  redirectTo: '/home',
+  redirectTo: '/players',
   pathMatch: 'full'
 }, {
   path: 'home',
@@ -35,6 +36,9 @@ const appRoutes: Routes = [{
 }, {
   path: 'players',
   component: PlayersComponent
+}, {
+  path: 'players/add',
+  component: AddPlayerComponent
 }, {
   path: 'players/:id',
   component: PlayerDetailComponent
@@ -55,7 +59,8 @@ const appRoutes: Routes = [{
     ButtonAddMatchComponent,
     ButtonAddPlayerComponent,
     FooterComponent,
-    AddMatchComponent
+    AddMatchComponent,
+    AddPlayerComponent
   ],
   imports: [
     BrowserModule,

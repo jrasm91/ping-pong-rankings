@@ -9,9 +9,9 @@ export class AppComponent {
   title = 'app';
 
   routes = [{
-    name: 'Home',
-    link: '/home'
-  }, {
+    //   name: 'Home',
+    //   link: '/home'
+    // }, {
     name: 'Players',
     link: '/players'
   }, {
