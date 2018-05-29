@@ -16,7 +16,7 @@ export class SetsFormatPipe implements PipeTransform {
         losses += 1;
       }
     });
-    return reverse ? `${wins} - ${losses}` : `${losses} - ${wins}`;
+    return reverse ? `${losses} - ${wins}` : `${wins} - ${losses}`;
   }
 
 }

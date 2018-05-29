@@ -8,7 +8,7 @@ export class GamesFormatPipe implements PipeTransform {
   transform(games: Array<Game>, reverse: boolean): any {
     return (games || [])
       .map(game => {
-        return reverse ? `${game.player1} - ${game.player2}` : `${game.player2} - ${game.player1}`;
+        return reverse ? `${game.player2} - ${game.player1}` : `${game.player1} - ${game.player2}`;
       }).join(', ');
   }
 }

@@ -39,10 +39,10 @@
             <div class="d-none col-lg-2">{{ match.date | date: 'MM/dd/yyyy'}}</div>
             <div class="col-5 col-lg-4"> {{ match.loser === player._id? match.winnerName : match.loserName }}</div>
             <div class="col-3 col-lg-2">
-              <span *ngIf="match.winnerId === player._id" class="font-weight-bold text-success">{{ match.games | setsFormat }}</span>
-              <span *ngIf="match.winnerId !== player._id" class="font-weight-bold text-danger">{{ match.games | setsFormat }}</span>
+              <span class="font-weight-bold" 
+              [ngClass]="{ 'text-success': player._id === match.winnerId, 'text-danger': player._id === match.loserId }">{{ match.games | setsFormat: match.loserId === player._id }}</span>
             </div>
-            <div class="col-4 col-lg-4">{{ match.games | gamesFormat }}</div>
+            <div class="col-4 col-lg-4">{{ match.games | gamesFormat: match.player2 === player._id }}</div>
           </div>
         </div>
       </div>
