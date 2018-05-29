@@ -1,5 +1,5 @@
 
-
+const mongoose = require('mongoose');
 const db = require('./Database');
 
 const Match = db.Match;
@@ -42,15 +42,24 @@ class MatchManager {
     });
   }
 
+  getByPlayer(id) {
+    return new Promise((resolve, reject) => {
+      Match.find({
+        $or: [{ player1: mongoose.Types.ObjectId(id) }, { player2: mongoose.Types.ObjectId(id) }]
+      }, null, { sort: '-date' }, (err, matches) => err ? reject(err) : resolve(matches));
+    });
+  }
+
   deleteMatch(match) {
     return new Promise((resolve, reject) => {
       resolve(true);
     })
   }
 
-  getAll() {
+  getAll(limit) {
+    limit = parseInt(limit, 10) || null;
     return new Promise((resolve, reject) => {
-      Match.find({}, null, { sort: '-date' }, (err, matches) => err ? reject(err) : resolve(matches));
+      Match.find({}, null, { sort: '-date', limit }, (err, matches) => err ? reject(err) : resolve(matches));
     });
   }
 }

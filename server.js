@@ -50,6 +50,13 @@ app.get('/api/players/:id', (req, res) => {
   });
 });
 
+/** PLAYER GET MATCHES */
+app.get('/api/players/:id/matches', (req, res) => {
+  ranker.getMatchesByPlayer(req.params.id).then(matches => {
+    res.send(matches)
+  });
+});
+
 /** PLAYER ADD */
 app.post('/api/players', (req, res) => {
   ranker.addPlayer(req.body).then(player => res.send(player));
@@ -67,7 +74,7 @@ app.delete('/api/players/:id', (req, res) => {
 
 /** MATCHES GET ALL*/
 app.get('/api/matches', (req, res) => {
-  ranker.getMatches().then(matches => res.send(matches));
+  ranker.getMatches(req.query.limit).then(matches => res.send(matches));
 });
 
 /** MATCHES GET ONE*/

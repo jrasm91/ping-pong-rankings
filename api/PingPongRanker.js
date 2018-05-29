@@ -72,6 +72,7 @@ class PingPongRanker {
     return this.playerManager.getById(id);
   }
 
+
   addPlayer(player) {
     return this.playerManager.addPlayer(player);
   }
@@ -89,9 +90,13 @@ class PingPongRanker {
     });
   }
 
-  getMatches() {
-    return this.matchManager.getAll();
-  Z}
+  getMatches(limit) {
+    return this.matchManager.getAll(limit);
+  }
+
+  getMatchesByPlayer(id) {
+    return this.matchManager.getByPlayer(id);
+  }
 
   getMatchById(id) {
     return this.matchManager.getById(id);

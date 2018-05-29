@@ -16,6 +16,8 @@ export class ApiService {
   private _players = new BehaviorSubject<Array<Player>>([]);
   private _matches = new BehaviorSubject<Array<Match>>([]);
 
+  private MATCH_LIMIT = 250;
+
   constructor(
     @Inject(HttpClient) private http: HttpClient
   ) {
@@ -27,7 +29,7 @@ export class ApiService {
       this._players.next(players);
     });
 
-    this.http.get<Array<Match>>(`/api/matches`).subscribe(matches => {
+    this.http.get<Array<Match>>(`/api/matches?limit=${this.MATCH_LIMIT}`).subscribe(matches => {
       this._matches.next(matches);
     });
   }
@@ -61,9 +63,7 @@ export class ApiService {
   }
 
   getMatchesByPlayer(id): Observable<Array<Match>> {
-    const matches = this._matches.getValue();
-    const filtered = matches.filter(match => match.winnerId === id || match.loserId === id);
-    return Observable.of(filtered);
+    return this.http.get<Array<Match>>(`/api/players/${id}/matches`);
   }
 
   getPlayerById(id: string): Observable<Player> {
