@@ -40,8 +40,8 @@ export class AddMatchComponent implements OnInit {
 
   resetGame() {
     this.newGame = {
-      player1: 21,
-      player2: 0
+      player1: null,
+      player2: null
     };
   }
 

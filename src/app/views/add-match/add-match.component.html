@@ -25,22 +25,22 @@
       <div class="form-group">
         <span>Scores</span>
         <div class="d-flex flex-column">
-          <span *ngFor="let game of newMatch.games; let i = index">
+          <span *ngFor="let game of newMatch.games; let i = index" class="mb-2">
             {{ game.player1 }} - {{ game.player2 }}
             <span class="fas fa-times remove-game text-danger" (click)="removeGame(i)"></span>
           </span>
         </div>
         <div class="d-flex flex-row">
           <div class="d-flex flex-row">
-            <input type="text" class="form-control score-input" placeholder="21" name="player1Score" [(ngModel)]="newGame.player1">
+            <input type="text" class="form-control score-input" placeholder="0" name="player1Score" [(ngModel)]="newGame.player1">
             <div class="ml-2"></div>
-            <input type="text" class="form-control score-input" placeholder="21" name="player2Score" [(ngModel)]="newGame.player2">
-            <button type="button" class="btn btn-info ml-2" (click)="addGame()">Add Game</button>
+            <input type="text" class="form-control score-input" placeholder="0" name="player2Score" [(ngModel)]="newGame.player2">
+            <button type="button" class="btn btn-secondary ml-2" (click)="addGame()" [disabled]="!newGame.player1 || !newGame.player2">ADD GAME</button>
           </div>
         </div>
       </div>
       <button [disabled]="!newMatch.player1 || !newMatch.player2 || newMatch.games.length === 0" type="button" class="btn btn-primary"
-        (click)="addMatch()">Add Match</button>
+        (click)="addMatch()">ADD MATCH</button>
     </form>
   </div>
   <div class="col-md-5 col-lg-4"></div>

@@ -1,4 +1,4 @@
-<div class="d-none d-lg-block mt-3 ">
+<div class="d-none d-lg-block mt-3">
   <div class="d-flex justify-content-center">
     <h1>Matches</h1>
   </div>
@@ -10,30 +10,30 @@
   </div>
 </div>
 <div>
-  <div class="list-group-item list-group-item">
+  <div class="list-group-item list-group-item pl-.5">
     <div class="row font-weight-bold">
-      <div class="d-none col-lg-2">Date</div>
-      <div class="col-5 col-lg-4">Versus</div>
+      <div class="d-none d-lg-block col-lg-2">Date</div>
+      <div class="col-6 col-lg-5">Versus</div>
       <div class="col-3 col-lg-2">Sets</div>
-      <div class="col-4 col-lg-4">Scores</div>
+      <div class="col-3 col-lg-3">Scores</div>
     </div>
   </div>
   <div class="list-group-item list-group-item" *ngFor="let match of matches; let i = index">
     <div class="row">
-      <div class="d-none col-lg-2">{{ match.date | date: 'MM/dd/yyyy'}}</div>
-      <div class="col-5 col-lg-4 d-flex flex-column">
-        <span>
+      <div class="d-none d-lg-block col-lg-2">{{ match.date | date: 'MM/dd/yyyy'}}</div>
+      <div class="col-6 col-lg-5 d-flex flex-column justify-content-start flex-lg-row justify-content-lg-between">
+        <span class="pr-1 match-name">
           <a class="" [routerLink]="'/players/' + match.winnerId">{{ match.winnerName }}</a>
           <span class="text-success font-weight-bold">+{{ match.pointsExchanged }}</span>
-          <span class="ml-1 mr-1">vs</span>
         </span>
-        <span>
-          <a class="" [routerLink]="'/players/' + match.loserId">{{ match.loserName }}</a>
+        <span class="d-none d-lg-inline-block">-</span>
+        <span class="pr-1 match-name">
+          <a [routerLink]="'/players/' + match.loserId">{{ match.loserName }}</a>
           <span class="text-danger font-weight-bold">-{{ match.pointsExchanged }}</span>
         </span>
       </div>
       <div class="col-3 col-lg-2">{{ match.games | setsFormat }}</div>
-      <div class="col-4 col-lg-4">{{ match.games | gamesFormat }}</div>
+      <div class="col-3 col-lg-3">{{ match.games | gamesFormat }}</div>
     </div>
   </div>
 </div>

@@ -8,16 +8,17 @@
       <div class="list-group">
         <div class="list-group-item list-group-item">
           <div class="row font-weight-bold">
-            <div class="col-5">Opponent</div>
-            <div class="col-4">Record</div>
+            <div class="col-6">Opponent</div>
+            <div class="col-3">Record</div>
             <div class="col-3">Streak</div>
           </div>
         </div>
         <div class="list-group-item list-group-item" *ngFor="let compare of playerCompares; let i = index">
           <div class="row">
-            <div class="col-5">{{ compare.opponentName }}</div>
-            <div class="col-4">{{ compare.wins }} - {{ compare.losses }}</div>
-            <div class="col-3">{{ compare.streak }}
+            <div class="col-6">{{ compare.opponentName }}</div>
+            <div class="col-3">{{ compare.wins }} - {{ compare.losses }}</div>
+            <div class="col-3" class="font-weight-bold" [ngClass]="{ 'text-success': compare.streak > 0, 'text-danger': compare.streak < 0 }">
+              {{ compare.streak > 0? '+' + compare.streak : compare.streak }}
             </div>
           </div>
         </div>
@@ -29,20 +30,20 @@
         <div class="list-group-item list-group-item">
           <div class="row font-weight-bold">
             <div class="d-none col-2">Date</div>
-            <div class="col-5 col-lg-4">Opponent</div>
+            <div class="col-6 col-lg-4">Opponent</div>
             <div class="col-3 col-lg-2">Sets</div>
-            <div class="col-4 col-lg-4">Scores</div>
+            <div class="col-3 col-lg-4">Scores</div>
           </div>
         </div>
         <div class="list-group-item list-group-item" *ngFor="let match of playerMatches; let i = index">
           <div class="row">
             <div class="d-none col-lg-2">{{ match.date | date: 'MM/dd/yyyy'}}</div>
-            <div class="col-5 col-lg-4"> {{ match.loser === player._id? match.winnerName : match.loserName }}</div>
+            <div class="col-6 col-lg-4"> {{ match.loser === player._id? match.winnerName : match.loserName }}</div>
             <div class="col-3 col-lg-2">
               <span class="font-weight-bold" 
               [ngClass]="{ 'text-success': player._id === match.winnerId, 'text-danger': player._id === match.loserId }">{{ match.games | setsFormat: match.loserId === player._id }}</span>
             </div>
-            <div class="col-4 col-lg-4">{{ match.games | gamesFormat: match.player2 === player._id }}</div>
+            <div class="col-3 col-lg-4">{{ match.games | gamesFormat: match.player2 === player._id }}</div>
           </div>
         </div>
       </div>

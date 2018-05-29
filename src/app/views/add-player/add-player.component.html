@@ -6,12 +6,12 @@
   <div class="col-sm-12 col-md-6 col-lg-4">
     <form ngForm>
       <div class="form-group">
-        <label for="playerName">Name</label>
-        <input type="text" id="playerName" class="form-control btn-primary-outline" placeholder="Johnny" name="name" [(ngModel)]="newPlayer.name"
+        <!-- <label for="playerName">Name</label> -->
+        <input type="text" id="playerName" class="form-control btn-primary-outline" placeholder="Enter Name" name="name" [(ngModel)]="newPlayer.name"
         />
       </div>
       <button [disabled]="!newPlayer.name" type="button" class="btn btn-primary" (click)="addPlayer()">
-        ADD
+        ADD PLAYER
       </button>
     </form>
   </div>
